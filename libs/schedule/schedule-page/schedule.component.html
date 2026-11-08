@@ -2,15 +2,11 @@
   <div class="page-header">
     <div>
       <h1>Расписание по дням</h1>
-      <p >Управление записями пациентов на приём</p>
+      <p>Управление записями пациентов на приём</p>
     </div>
 
     @if (isAdmin) {
-      <button
-        class="create-button"
-        type="button"
-        (click)="openCreateModal()"
-      >
+      <button class="create-button" type="button" (click)="openCreateModal()">
         <span>+</span>
         Создать запись
       </button>
@@ -161,10 +157,7 @@
                     }
                   </select>
                 } @else {
-                  <span
-                    class="status"
-                    [class]="getStatusClass(row.status)"
-                  >
+                  <span class="status" [class]="getStatusClass(row.status)">
                     {{ getStatusLabel(row.status) }}
                   </span>
                 }
@@ -188,10 +181,12 @@
           }
 
           @if (paginatedRows().length === 0) {
-            <tr>
-              <td colspan="6" class="empty-state">
-                <div>На выбранную дату записей нет</div>
-                <span>Попробуйте изменить дату или фильтры</span>
+            <tr class="empty-row">
+              <td colspan="6">
+                <div class="empty-state">
+                  <div>На выбранную дату записей нет</div>
+                  <span>Попробуйте изменить дату или фильтры</span>
+                </div>
               </td>
             </tr>
           }
@@ -201,8 +196,8 @@
 
     <div class="pagination">
       <span>
-        Показано {{ rangeStart() }}–{{ rangeEnd() }}
-        из {{ rows().length }} {{ appointmentWord() }}
+        Показано {{ rangeStart() }}–{{ rangeEnd() }} из {{ rows().length }}
+        {{ appointmentWord() }}
       </span>
 
       <div class="pagination-buttons">
@@ -215,9 +210,7 @@
           ‹
         </button>
 
-        <span>
-          {{ currentPage() }} / {{ totalPages() }}
-        </span>
+        <span> {{ currentPage() }} / {{ totalPages() }} </span>
 
         <button
           type="button"

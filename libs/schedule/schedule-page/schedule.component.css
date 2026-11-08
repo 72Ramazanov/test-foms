@@ -328,10 +328,38 @@ tbody tr:hover {
   cursor: not-allowed;
 }
 
+.empty-row {
+  background: #fff;
+}
+
+.empty-row:hover {
+  background: #fff;
+}
+
+.empty-row td {
+  padding: 0;
+  border: none;
+}
+
 .empty-state {
-  padding: 55px 20px;
-  color: #536174;
+  width: 100%;
+  min-height: 180px;
+  box-sizing: border-box;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  padding: 30px 20px;
   text-align: center;
+  white-space: normal;
+  color: #536174;
+}
+
+.empty-state div {
+  font-size: 14px;
+  font-weight: 500;
 }
 
 .empty-state span {
