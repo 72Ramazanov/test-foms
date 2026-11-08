@@ -1,0 +1,264 @@
+<div class="statistics-page">
+  <header class="page-header">
+    <div>
+      <h1>Статистика</h1>
+      <p>Аналитика записей и загрузки клиники</p>
+    </div>
+  </header>
+
+  <section class="filters">
+    <div class="period-controls">
+      <button
+        type="button"
+        [class.active]="period() === 'WEEK'"
+        (click)="changePeriod('WEEK')"
+      >
+        Неделя
+      </button>
+
+      <button
+        type="button"
+        [class.active]="period() === 'MONTH'"
+        (click)="changePeriod('MONTH')"
+      >
+        Месяц
+      </button>
+    </div>
+
+    <div class="period-label">
+      {{ periodLabel() }}
+    </div>
+
+    @if (!isDoctor) {
+      <div class="filter-controls">
+        <label for="grouping">Группировка:</label>
+
+        <select
+          id="grouping"
+          [ngModel]="grouping()"
+          (ngModelChange)="changeGrouping($event)"
+        >
+          <option value="DOCTORS">По врачам</option>
+          <option value="SERVICES">По услугам</option>
+        </select>
+      </div>
+    }
+  </section>
+
+  <section class="statistics-cards">
+    <article class="stat-card">
+      <div class="stat-icon stat-icon-blue">
+        <svg icon="load" class="svg16"></svg>
+      </div>
+
+      <div>
+        <p class="stat-description">Всего записей</p>
+        <h2 class="stat-value">{{ summary().total }}</h2>
+      </div>
+    </article>
+
+    <article class="stat-card">
+      <div class="stat-icon stat-icon-green">
+        <svg icon="done" class="svg16"></svg>
+      </div>
+
+      <div>
+        <p class="stat-description">Принято пациентов</p>
+        <h2 class="stat-value">{{ summary().accepted }}</h2>
+      </div>
+    </article>
+
+    <article class="stat-card">
+      <div class="stat-icon stat-icon-red">
+        <svg icon="cancel" class="svg16"></svg>
+      </div>
+
+      <div>
+        <p class="stat-description">Отменённые записи</p>
+        <h2 class="stat-value">{{ summary().cancelled }}</h2>
+      </div>
+    </article>
+
+    <article class="stat-card">
+      <div class="stat-icon stat-icon-purple">
+        <svg icon="main" class="svg16"></svg>
+      </div>
+
+      <div>
+        <p class="stat-description">Средняя загрузка</p>
+        <h2 class="stat-value">{{ summary().averageLoad }}%</h2>
+      </div>
+    </article>
+  </section>
+
+  <section class="table-card">
+    <div class="table-header">
+      <div>
+        <h3>
+          {{
+            grouping() === "DOCTORS"
+              ? "Статистика по врачам"
+              : "Статистика по услугам"
+          }}
+        </h3>
+
+        <p>
+          {{
+            grouping() === "DOCTORS"
+              ? "Количество записей и результаты приёма"
+              : "Количество записей по медицинским услугам"
+          }}
+        </p>
+      </div>
+    </div>
+
+    <div class="table-wrapper">
+      @if (grouping() === "DOCTORS") {
+        <table>
+          <thead>
+            <tr>
+              <th>Врач</th>
+              <th>Всего записей</th>
+              <th>Принято</th>
+              <th>Отменено</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            @for (doctor of doctorsStatistics(); track doctor.id) {
+              <tr>
+                <td>
+                  <div class="doctor-info">
+                    <div class="doctor-avatar">
+                      {{ getDoctorInitials(doctor.name) }}
+                    </div>
+
+                    <span class="doctor-name">
+                      {{ doctor.name }}
+                    </span>
+                  </div>
+                </td>
+
+                <td>{{ doctor.total }}</td>
+
+                <td>
+                  <span class="table-status status-accepted">
+                    {{ doctor.accepted }}
+                  </span>
+                </td>
+
+                <td>
+                  <span class="table-status status-cancelled">
+                    {{ doctor.cancelled }}
+                  </span>
+                </td>
+              </tr>
+            } @empty {
+              <tr>
+                <td colspan="4">
+                  <div class="empty-state">Нет данных за выбранный период</div>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      }
+
+      @if (grouping() === "SERVICES") {
+        <table>
+          <thead>
+            <tr>
+              <th>Услуга</th>
+              <th>Всего записей</th>
+              <th>Принято</th>
+              <th>Отменено</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            @for (service of servicesStatistics(); track service.id) {
+              <tr>
+                <td>
+                  <span class="service-name">
+                    {{ service.name }}
+                  </span>
+                </td>
+
+                <td>{{ service.total }}</td>
+
+                <td>
+                  <span class="table-status status-accepted">
+                    {{ service.accepted }}
+                  </span>
+                </td>
+
+                <td>
+                  <span class="table-status status-cancelled">
+                    {{ service.cancelled }}
+                  </span>
+                </td>
+              </tr>
+            } @empty {
+              <tr>
+                <td colspan="4">
+                  <div class="empty-state">Нет данных за выбранный период</div>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      }
+    </div>
+  </section>
+
+  <section class="charts-grid">
+    <article class="chart-card">
+      <div class="chart-header">
+        <div>
+          <h3>
+            {{ isDoctor ? "Записи по дням" : "Загрузка врачей" }}
+          </h3>
+
+          <p>
+            {{
+              isDoctor
+                ? "Количество записей за выбранный период"
+                : "Количество записей по каждому врачу"
+            }}
+          </p>
+        </div>
+      </div>
+
+      <div class="chart-canvas bar-chart-canvas">
+        @if (isDoctor) {
+          <app-bar-chart
+            [labels]="dailyChartLabels()"
+            [data]="dailyChartData()"
+          />
+        } @else {
+          <app-bar-chart
+            [labels]="doctorChartLabels()"
+            [data]="doctorChartData()"
+          />
+        }
+      </div>
+    </article>
+
+    <article class="chart-card">
+      <div class="chart-header">
+        <div>
+          <h3>Популярность услуг</h3>
+          <p>Распределение записей по услугам</p>
+        </div>
+      </div>
+
+      <div class="chart-canvas service-chart-canvas">
+        <app-doughnut-chart
+          [labels]="serviceChartLabels()"
+          [data]="serviceChartData()"
+          [colors]="serviceChartColors()"
+        />
+      </div>
+    </article>
+  </section>
+</div>

@@ -1,0 +1,14 @@
+@if (hasData()) {
+  <div class="chart-canvas">
+    <canvas
+      baseChart
+      [type]="'bar'"
+      [data]="chartData()"
+      [options]="chartOptions"
+    ></canvas>
+  </div>
+} @else {
+  <div class="chart-empty">
+    Нет данных за выбранный период
+  </div>
+}

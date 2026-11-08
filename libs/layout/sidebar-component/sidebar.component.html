@@ -1,0 +1,45 @@
+<aside class="sidebar">
+  <div class="sidebar-header">
+    <div class="logo-icon">+</div>
+    <span class="logo-title">FomsClinic</span>
+  </div>
+
+  <nav class="sidebar-navigation">
+    @for (item of menuItems; track item.route) {
+      @if (item.enabled) {
+        <a
+          class="nav-item"
+          [routerLink]="item.route"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+        >
+          <svg [icon]="item.icon" class="svg16"></svg>
+          <span class="nav-title">{{ item.title }}</span>
+        </a>
+      } @else {
+        <div class="nav-item">
+          <svg [icon]="item.icon" class="svg16"></svg>
+          <span class="nav-title">{{ item.title }}</span>
+        </div>
+      }
+    }
+  </nav>
+
+  <div class="sidebar-footer">
+    @if (user(); as currentUser) {
+      <div class="user-avatar">
+        {{ initials() }}
+      </div>
+
+      <div class="user-info">
+        <span class="user-name">
+          {{ currentUser.fullName }}
+        </span>
+
+        <span class="user-role">
+          {{ roleName() }}
+        </span>
+      </div>
+    }
+  </div>
+</aside>

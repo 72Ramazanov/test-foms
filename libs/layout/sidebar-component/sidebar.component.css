@@ -1,0 +1,148 @@
+:host {
+  display: block;
+  flex: 0 0 260px;
+  width: 260px;
+  height: 100%;
+  min-height: 0;
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  padding: 22px 14px;
+  background: #ffffff;
+  border-right: 1px solid #e8edf5;
+  box-sizing: border-box;
+}
+
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 10px;
+  margin-bottom: 38px;
+}
+
+.logo-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  flex-shrink: 0;
+  border-radius: 11px;
+  background: #e8f0ff;
+  color: red;
+  font-size: 40px;
+  font-weight: 700;
+}
+
+.logo-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #111827;
+  letter-spacing: -0.4px;
+}
+
+.svg16 {
+  width: 24px;
+  height: 24px;
+  min-width: 14px;
+  flex-shrink: 0;
+  display: inline-block;
+  color: black;
+}
+
+
+.sidebar-navigation {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  height: 46px;
+  padding: 0 13px;
+  border-radius: 9px;
+  color: black;
+  text-decoration: none;
+  font-size: 20px;
+  font-weight: 500;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.nav-item:hover {
+  background: #f3f6fb;
+}
+
+.nav-item.active {
+  background: #e8f0ff;
+  color: #2563eb;
+  font-weight: 600;
+}
+
+.nav-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+
+  font-size: 21px;
+}
+
+.sidebar-footer {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  margin-top: auto;
+  padding: 14px 10px 4px;
+  border-top: 1px solid #f0f2f5;
+}
+
+.user-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: #e8edf5;
+  color: black;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.user-name {
+  color: black;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.user-role {
+  color: #64748b;
+  font-size: 13px;
+}
+
+@media (max-width: 768px) {
+  :host {
+    display: none;
+  }
+}

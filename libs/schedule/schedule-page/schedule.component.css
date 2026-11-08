@@ -1,0 +1,416 @@
+:host {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+}
+
+.schedule-page {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  color: #202938;
+}
+
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 30px;
+}
+
+.page-header h1 {
+  margin: 0;
+  color: #000;
+  font-size: 30px;
+  font-weight: 700;
+}
+
+.page-header p {
+  margin: 7px 0 0;
+  color: #8993a3;
+  font-size: 18px;
+}
+
+.create-button {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 12px 18px;
+  border: none;
+  border-radius: 8px;
+  background: #3478ed;
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.create-button:hover {
+  background: #2367d9;
+}
+
+.create-button span {
+  font-size: 21px;
+  line-height: 16px;
+}
+
+.filters {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding: 18px;
+}
+
+.date-controls,
+.filter-controls {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.arrow-button,
+.today-button,
+.pagination-buttons button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 38px;
+  min-width: 38px;
+  border: 1px solid #e2e7ef;
+  border-radius: 7px;
+  background: white;
+  color: #374151;
+  cursor: pointer;
+}
+
+.arrow-button {
+  font-size: 24px;
+}
+
+.selected-date input {
+  width: 120px;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: #000;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.today-button {
+  padding: 0 13px;
+  font-size: 13px;
+}
+
+.today-button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.filter-controls select {
+  height: 38px;
+  min-width: 145px;
+  padding: 0 30px 0 12px;
+  border: 1px solid #e2e7ef;
+  border-radius: 7px;
+  outline: none;
+  background: white;
+  color: #374151;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.filter-controls select:focus {
+  border-color: #3478ed;
+}
+
+.table-card {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+  border: 1px solid #e9edf3;
+  border-radius: 10px;
+  background: white;
+}
+
+.table-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 20px 22px;
+  border-bottom: 1px solid #edf0f4;
+}
+
+.table-header h2 {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 650;
+}
+
+.appointment-count {
+  color: #8b95a5;
+  font-size: 13px;
+}
+
+.table-wrapper {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  white-space: nowrap;
+}
+
+thead {
+  background: #f8f9fb;
+}
+
+th {
+  padding: 15px 18px;
+  color: #8993a3;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+td {
+  padding: 16px 18px;
+  border-top: 1px solid #edf0f4;
+  border-bottom: 1px solid #edf0f4;
+  font-size: 13px;
+}
+
+tbody tr:hover {
+  background: #fafcff;
+}
+
+.time,
+.patient-name {
+  color: #263244;
+  font-weight: 600;
+}
+
+.duration,
+.phone {
+  display: block;
+  margin-top: 5px;
+  color: #929baa;
+  font-size: 12px;
+}
+
+.doctor-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.doctor-avatar {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #e9f1ff;
+  color: #3478ed;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.status {
+  display: inline-flex;
+  padding: 6px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.scheduled {
+  background: #fff5df;
+  color: #b67c12;
+}
+
+.accepted {
+  background: #e5f7ed;
+  color: #25965a;
+}
+
+.completed {
+  background: #e7efff;
+  color: #3478ed;
+}
+
+.cancelled {
+  background: #ffe9e9;
+  color: #d34c4c;
+}
+
+.no-show {
+  background: #f0eafa;
+  color: #8754bb;
+}
+
+.status-select {
+  min-width: 125px;
+  padding: 6px 25px 6px 10px;
+  border: 1px solid #e7ebf1;
+  border-radius: 6px;
+  background-color: white;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.status-select:focus {
+  outline: none;
+  border-color: #64748b;
+}
+
+.status-select.scheduled {
+  color: #b7791f;
+  background-color: #fffbeb;
+}
+
+.status-select.accepted {
+  color: #16804a;
+  background-color: #ecfdf3;
+}
+
+.status-select.cancelled {
+  color: #dc4545;
+  background-color: #fef2f2;
+}
+
+.status-select.no-show {
+  color: #647084;
+  background-color: #f1f5f9;
+}
+
+.action-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 35px;
+  cursor: pointer;
+  border: none;
+  border-radius: 8px;
+  background: #3478ed;
+  color: white;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.action-button:hover:not(:disabled) {
+  background: #2367d9;
+}
+
+.action-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.empty-state {
+  padding: 55px 20px;
+  color: #536174;
+  text-align: center;
+}
+
+.empty-state span {
+  display: block;
+  margin-top: 7px;
+  color: #9aa3b1;
+  font-size: 12px;
+}
+
+.pagination {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  padding: 17px 22px;
+  border-top: 1px solid #edf0f4;
+  color: #8993a3;
+  font-size: 12px;
+}
+
+.pagination-buttons {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.pagination-buttons button {
+  width: 32px;
+  height: 32px;
+  font-size: 20px;
+}
+
+.pagination-buttons button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.pagination-buttons span {
+  color: #374151;
+}
+
+@media (max-width: 900px) {
+  .filters {
+    align-items: flex-start;
+  }
+
+  .filter-controls {
+    width: 100%;
+  }
+}
+
+@media (max-width: 600px) {
+  .page-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .create-button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .filters {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .filter-controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .filter-controls select {
+    width: 100%;
+  }
+
+  .pagination {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}

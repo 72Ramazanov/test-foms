@@ -1,0 +1,233 @@
+<div class="schedule-page">
+  <div class="page-header">
+    <div>
+      <h1>Расписание по дням</h1>
+      <p >Управление записями пациентов на приём</p>
+    </div>
+
+    @if (isAdmin) {
+      <button
+        class="create-button"
+        type="button"
+        (click)="openCreateModal()"
+      >
+        <span>+</span>
+        Создать запись
+      </button>
+    }
+  </div>
+
+  <section class="filters">
+    <div class="date-controls">
+      <button
+        type="button"
+        class="arrow-button"
+        (click)="changeDate(-1)"
+        aria-label="Предыдущий день"
+      >
+        ‹
+      </button>
+
+      <div class="selected-date">
+        <input
+          type="date"
+          [ngModel]="selectedDate()"
+          (ngModelChange)="selectedDate.set($event); onFilterChange()"
+        />
+      </div>
+
+      <button
+        type="button"
+        class="arrow-button"
+        (click)="changeDate(1)"
+        aria-label="Следующий день"
+      >
+        ›
+      </button>
+
+      <button
+        type="button"
+        class="today-button"
+        [disabled]="isToday()"
+        (click)="goToday()"
+      >
+        Сегодня
+      </button>
+    </div>
+
+    <div class="filter-controls">
+      @if (isAdmin) {
+        <select
+          [ngModel]="selectedDoctor()"
+          (ngModelChange)="selectedDoctor.set($event); onFilterChange()"
+        >
+          <option value="ALL">Все врачи</option>
+
+          @for (doctor of doctors(); track doctor.id) {
+            <option [value]="doctor.id">
+              {{ doctor.fullName }}
+            </option>
+          }
+        </select>
+      }
+
+      <select
+        [ngModel]="selectedService()"
+        (ngModelChange)="selectedService.set($event); onFilterChange()"
+      >
+        <option value="ALL">Все услуги</option>
+
+        @for (service of services(); track service.id) {
+          <option [value]="service.id">
+            {{ service.name }}
+          </option>
+        }
+      </select>
+
+      <select
+        [ngModel]="selectedStatus()"
+        (ngModelChange)="selectedStatus.set($event); onFilterChange()"
+      >
+        <option value="ALL">Все статусы</option>
+
+        @for (status of statuses; track status.value) {
+          <option [value]="status.value">
+            {{ status.label }}
+          </option>
+        }
+      </select>
+    </div>
+  </section>
+
+  <section class="table-card">
+    <div class="table-header">
+      <h2>Записи на {{ dateLabel() }}</h2>
+
+      <span class="appointment-count">
+        {{ rows().length }} {{ appointmentWord() }}
+      </span>
+    </div>
+
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>Время</th>
+            <th>Пациент</th>
+            <th>Врач</th>
+            <th>Услуга</th>
+            <th>Статус</th>
+            <th>Действия</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          @for (row of paginatedRows(); track row.id) {
+            <tr>
+              <td>
+                <div class="time">{{ row.time }}</div>
+                <span class="duration">{{ row.duration }} мин.</span>
+              </td>
+
+              <td>
+                <div class="patient-name">{{ row.patientName }}</div>
+                <span class="phone">{{ row.patientPhone }}</span>
+              </td>
+
+              <td>
+                <div class="doctor-info">
+                  <div class="doctor-avatar">
+                    {{ getDoctorInitials(row.doctorName) }}
+                  </div>
+
+                  <span>{{ row.doctorName }}</span>
+                </div>
+              </td>
+
+              <td>{{ row.serviceName }}</td>
+
+              <td>
+                @if (isAdmin) {
+                  <select
+                    class="status-select"
+                    [ngModel]="row.status"
+                    (ngModelChange)="changeAppointmentStatus(row.id, $event)"
+                    [class]="getStatusClass(row.status)"
+                  >
+                    @for (status of statuses; track status.value) {
+                      <option [value]="status.value">
+                        {{ status.label }}
+                      </option>
+                    }
+                  </select>
+                } @else {
+                  <span
+                    class="status"
+                    [class]="getStatusClass(row.status)"
+                  >
+                    {{ getStatusLabel(row.status) }}
+                  </span>
+                }
+              </td>
+
+              <td>
+                @if (isAdmin) {
+                  <button
+                    type="button"
+                    class="action-button"
+                    title="Редактировать запись"
+                    (click)="openEditModal(row)"
+                  >
+                    Открыть
+                  </button>
+                } @else {
+                  <span class="readonly-action">————</span>
+                }
+              </td>
+            </tr>
+          }
+
+          @if (paginatedRows().length === 0) {
+            <tr>
+              <td colspan="6" class="empty-state">
+                <div>На выбранную дату записей нет</div>
+                <span>Попробуйте изменить дату или фильтры</span>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <div class="pagination">
+      <span>
+        Показано {{ rangeStart() }}–{{ rangeEnd() }}
+        из {{ rows().length }} {{ appointmentWord() }}
+      </span>
+
+      <div class="pagination-buttons">
+        <button
+          type="button"
+          (click)="previousPage()"
+          [disabled]="currentPage() === 1"
+          aria-label="Предыдущая страница"
+        >
+          ‹
+        </button>
+
+        <span>
+          {{ currentPage() }} / {{ totalPages() }}
+        </span>
+
+        <button
+          type="button"
+          (click)="nextPage()"
+          [disabled]="currentPage() >= totalPages()"
+          aria-label="Следующая страница"
+        >
+          ›
+        </button>
+      </div>
+    </div>
+  </section>
+</div>

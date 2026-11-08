@@ -1,1 +1,30 @@
-/* You can add global styles to this file, and also import other style files */
+@use "fonts";
+@use "margins";
+:root {
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  height: 100dvh;
+  font-family: "JetBrains Mono", sans-serif;
+  background: var(--dark-color);
+  color: var(--light-color);
+  background: #161616;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+svg[icon] {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  min-width: 18px;
+  flex-shrink: 0;
+}

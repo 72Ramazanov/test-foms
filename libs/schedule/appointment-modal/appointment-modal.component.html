@@ -1,0 +1,213 @@
+
+<div class="modal-backdrop" (click)="close()">
+  <section class="modal" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <div>
+        <h2>
+          {{ isEditMode() ? "Редактировать запись" : "Новая запись" }}
+        </h2>
+
+        <p>
+          {{
+            isEditMode()
+              ? "Измените информацию о приёме пациента"
+              : "Заполните информацию о приёме пациента"
+          }}
+        </p>
+      </div>
+
+      <button type="button" class="close-button" (click)="close()">×</button>
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="save()">
+      <div class="form-group">
+        <label for="patientName">Имя пациента</label>
+
+        <input
+          id="patientName"
+          type="text"
+          formControlName="patientName"
+          placeholder="Введите ФИО пациента"
+          [class.invalid]="
+            form.controls.patientName.invalid &&
+            form.controls.patientName.touched
+          "
+        />
+
+        @if (
+          form.controls.patientName.touched &&
+          form.controls.patientName.hasError('required')
+        ) {
+          <span class="field-error">Введите ФИО пациента</span>
+        }
+
+        @if (
+          form.controls.patientName.touched &&
+          form.controls.patientName.hasError('minlength')
+        ) {
+          <span class="field-error">Минимум 2 символа</span>
+        }
+      </div>
+
+      <div class="form-group">
+        <label for="patientPhone">Номер телефона</label>
+
+        <input
+          id="patientPhone"
+          type="tel"
+          formControlName="patientPhone"
+          placeholder="+7 (999) 123-45-67"
+          [class.invalid]="
+            form.controls.patientPhone.invalid &&
+            form.controls.patientPhone.touched
+          "
+        />
+
+        @if (
+          form.controls.patientPhone.touched &&
+          form.controls.patientPhone.hasError('required')
+        ) {
+          <span class="field-error">Введите номер телефона</span>
+        }
+
+        @if (
+          form.controls.patientPhone.touched &&
+          form.controls.patientPhone.hasError('invalidPhone')
+        ) {
+          <span class="field-error">
+            Введите корректный номер телефона
+          </span>
+        }
+      </div>
+
+      @if (isAdmin()) {
+        <div class="form-group">
+          <label for="doctor">Врач</label>
+
+          <select
+            id="doctor"
+            formControlName="doctorId"
+            [class.invalid]="
+              form.controls.doctorId.invalid &&
+              form.controls.doctorId.touched
+            "
+          >
+            <option value="" disabled>Выберите врача</option>
+
+            @for (doctor of doctors(); track doctor.id) {
+              <option [value]="doctor.id">
+                {{ doctor.fullName }} — {{ doctor.specialization }}
+              </option>
+            }
+          </select>
+
+          @if (
+            form.controls.doctorId.touched &&
+            form.controls.doctorId.invalid
+          ) {
+            <span class="field-error">Выберите врача</span>
+          }
+        </div>
+      }
+
+      <div class="form-group">
+        <label for="service">Услуга</label>
+
+        <select
+          id="service"
+          formControlName="serviceId"
+          [class.invalid]="
+            form.controls.serviceId.invalid &&
+            form.controls.serviceId.touched
+          "
+        >
+          <option value="" disabled>Выберите услугу</option>
+
+          @for (service of services(); track service.id) {
+            <option [value]="service.id">
+              {{ service.name }} — {{ service.duration }} мин. /
+              {{ service.price }} ₽
+            </option>
+          }
+        </select>
+
+        @if (
+          form.controls.serviceId.touched &&
+          form.controls.serviceId.invalid
+        ) {
+          <span class="field-error">Выберите услугу</span>
+        }
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="date">Дата приёма</label>
+
+          <input
+            id="date"
+            type="date"
+            formControlName="date"
+            [class.invalid]="
+              form.controls.date.invalid &&
+              form.controls.date.touched
+            "
+          />
+
+          @if (
+            form.controls.date.touched &&
+            form.controls.date.invalid
+          ) {
+            <span class="field-error">Выберите дату</span>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="time">Время приёма</label>
+
+          <input
+            id="time"
+            type="time"
+            formControlName="time"
+            min="08:00"
+            max="17:00"
+            step="300"
+            [class.invalid]="
+              form.controls.time.invalid &&
+              form.controls.time.touched
+            "
+          />
+
+          @if (
+            form.controls.time.touched &&
+            form.controls.time.invalid
+          ) {
+            <span class="field-error">Выберите время</span>
+          }
+        </div>
+      </div>
+
+      @if (form.hasError('outsideWorkingHours')) {
+        <span class="error-message">
+          Время приёма должно быть в пределах 08:00–17:00
+          с учётом длительности услуги.
+        </span>
+      }
+
+      @if (form.hasError('appointmentConflict')) {
+        <span class="error-message">
+          У этого врача уже есть запись на выбранное время.
+        </span>
+      }
+
+      <div class="modal-actions">
+        <button type="button" class="cancel-button" (click)="close()">
+          Отмена
+        </button>
+
+        <button type="submit" class="save-button">
+          {{ isEditMode() ? "Сохранить изменения" : "Создать запись" }}
+        </button>
+      </div>
+    </form>
+  </section>
+</div>
